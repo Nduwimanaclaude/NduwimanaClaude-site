@@ -49,12 +49,12 @@
   try {
     // Avatar: your portrait if set, otherwise the homepage photo.
     var hero = (PHOTOS.find(function(p){return p.featured}) || PHOTOS[0]);
-    var av = (typeof PORTRAIT !== "undefined" && PORTRAIT.src) ? PORTRAIT.src : hero.src;
+    var av = (typeof PORTRAIT !== "undefined" && PORTRAIT.src) ? PORTRAIT.src : (hero.srcSmall || hero.src);
     document.getElementById("avatar").innerHTML = '<img src="'+av+'" alt="">';
     // Strip: the 6 newest photos, each linking to its collection.
     var slug = function(s){ return s.toLowerCase().replace(/['’]/g,"").replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,""); };
     document.getElementById("strip").innerHTML = PHOTOS.filter(function(p){return p.src}).slice(0,6).map(function(p){
-      return '<a href="'+slug(p.set)+'.html"><img loading="lazy" src="'+p.src+'" alt="'+p.title.replace(/"/g,"&quot;")+'"></a>';
+      return '<a href="'+slug(p.set)+'.html"><img loading="lazy" src="'+(p.srcSmall||p.src)+'" alt="'+p.title.replace(/"/g,"&quot;")+'"></a>';
     }).join("");
   } catch(e) {}
 })();

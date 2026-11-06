@@ -39,6 +39,7 @@
     return "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg);
   }
   const srcOf = (p, w=1200, ratio) => p.src || placeholder(ratio ? {...p, ratio} : p, w);
+  const smallOf = (p, w=900, ratio) => p.srcSmall || srcOf(p, w, ratio);   // 1200px copy for grids/covers
   const $ = id => document.getElementById(id);
 
   /* ---------- lightbox ---------- */
@@ -69,14 +70,14 @@
   /* ---------- home ---------- */
   if(page==="home"){
     const hero = PHOTOS.find(p=>p.featured) || PHOTOS[0];
-    $("hero").innerHTML = `<img src="${srcOf(hero, 2100, innerWidth<760 ? 0.8 : 21/9)}" alt="${hero.title}" style="object-position:${hero.focus||"center"}">`;
+    $("hero").innerHTML = `<img src="${srcOf(hero, 2100, innerWidth<760 ? 0.8 : 21/9)}"${hero.srcSmall ? ` srcset="${hero.srcSmall} 1200w, ${hero.src} 2400w" sizes="(max-width: 760px) 100vw, 1400px"` : ""} alt="${hero.title}" style="object-position:${hero.focus||"center"}">`;
     $("heroTitle").textContent = hero.title; $("heroPlace").textContent = hero.place;
     $("hero").onclick = () => openLb([hero], 0);
     $("sets").innerHTML = CATS.map(s => {
       const items = PHOTOS.filter(p=>p.set===s);
       const cover = items.find(p=>typeof COVERS!=="undefined" && p.title===COVERS[s]) || items[0];
       return `<a class="set-card" href="${slugify(s)}.html">
-        <div class="frame"><img loading="lazy" src="${srcOf(cover, 900, 0.8)}" alt="${s}" style="object-position:${cover.focus||"center"}"></div>
+        <div class="frame"><img loading="lazy" src="${smallOf(cover, 900, 0.8)}" alt="${s}" style="object-position:${cover.focus||"center"}"></div>
         <h3>${s}</h3><div class="label">${items.length} photographs</div></a>`;
     }).join("");
   }
@@ -88,7 +89,7 @@
     const items = PHOTOS.filter(p=>p.set===set);
     $("gallery").innerHTML = items.map((p,i)=>`
       <figure class="tile" data-i="${i}">
-        <div class="frame" style="aspect-ratio:${p.ratio}"><img loading="lazy" src="${srcOf(p, 900)}" alt="${p.title}, ${p.place}"></div>
+        <div class="frame" style="aspect-ratio:${p.ratio}"><img loading="lazy" src="${smallOf(p, 900)}" alt="${p.title}, ${p.place}"></div>
         <figcaption class="meta"><span>${p.title}</span><span>${p.place}</span></figcaption>
       </figure>`).join("");
     $("gallery").querySelectorAll(".tile").forEach(t => t.onclick = () => openLb(items, +t.dataset.i));
