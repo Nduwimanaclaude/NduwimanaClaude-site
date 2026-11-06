@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Links · Nduwimana Claude</title>
+<meta name="description" content="Photography, journal, and contact for Nduwimana Claude.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+  body{justify-content:center}
+  .links-wrap{max-width:440px;width:100%;margin:0 auto;padding:48px 20px 40px;text-align:center}
+  .links-hero{width:112px;height:112px;border-radius:50%;overflow:hidden;margin:0 auto 18px;background:#ddd}
+  .links-wrap h1{font-family:var(--serif);font-weight:400;font-size:34px;line-height:1.1}
+  .links-wrap .tagline{color:var(--muted);font-size:14px;margin-top:6px}
+  .links-list{margin-top:32px;display:flex;flex-direction:column;gap:12px}
+  .links-list a{display:block;padding:16px 18px;border:1px solid var(--ink);font-size:13px;letter-spacing:.14em;text-transform:uppercase;transition:background .2s,color .2s}
+  .links-list a:hover{background:var(--ink);color:var(--bg)}
+  .links-list a.primary{background:var(--ink);color:var(--bg)}
+  .links-list a.primary:hover{opacity:.85}
+  .links-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:28px}
+  .links-strip a{aspect-ratio:1;overflow:hidden;display:block}
+  .links-foot{margin-top:32px;font-size:12px;color:var(--muted)}
+</style>
+</head>
+<body data-page="links">
+<div class="links-wrap">
+  <div class="links-hero" id="avatar"></div>
+  <h1>Nduwimana Claude</h1>
+  <div class="tagline">Photography · places, people, streets</div>
+
+  <div class="links-list">
+    <a class="primary" href="index.html">View the portfolio</a>
+    <a href="journal.html">Read the journal</a>
+    <a href="https://www.instagram.com/_claude_photography/">Instagram</a>
+    <a href="mailto:nclaude@nduwimanaclaude.com">Email me</a>
+  </div>
+
+  <div class="links-strip" id="strip"></div>
+  <div class="links-foot">nclaude@nduwimanaclaude.com</div>
+</div>
+<script src="photos.js"></script>
+<script src="content.js"></script>
+<script>
+(function(){
+  try {
+    // Avatar: your portrait if set, otherwise the homepage photo.
+    var hero = (PHOTOS.find(function(p){return p.featured}) || PHOTOS[0]);
+    var av = (typeof PORTRAIT !== "undefined" && PORTRAIT.src) ? PORTRAIT.src : hero.src;
+    document.getElementById("avatar").innerHTML = '<img src="'+av+'" alt="">';
+    // Strip: the 6 newest photos, each linking to its collection.
+    var slug = function(s){ return s.toLowerCase().replace(/['’]/g,"").replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,""); };
+    document.getElementById("strip").innerHTML = PHOTOS.filter(function(p){return p.src}).slice(0,6).map(function(p){
+      return '<a href="'+slug(p.set)+'.html"><img loading="lazy" src="'+p.src+'" alt="'+p.title.replace(/"/g,"&quot;")+'"></a>';
+    }).join("");
+  } catch(e) {}
+})();
+</script>
+</body>
+</html>
