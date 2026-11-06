@@ -7,6 +7,7 @@
    - set decides which page it shows on: "Places", "People" or "Streets".
    - ratio is width / height (3:2 landscape = 1.5, 4:5 portrait = 0.8).
    - featured: true puts it on the home page hero (use one).
+   - focus (optional) moves the crop on covers/hero, e.g. "50% 88%" = lower middle.
    - Leave src empty ("") to show a placeholder.
    ============================================================ */
 const PHOTOS = [
@@ -21,7 +22,7 @@ const PHOTOS = [
   { src:"photos/hill-through-branches.jpg", title:"Through the branches",    place:"Blue Ridge, VA",               set:"Places",  ratio:1.5 },
   { src:"photos/horses-utah.jpg",           title:"Evening pasture",         place:"Utah",                         set:"Places",  ratio:1.5 },
 
-  { src:"photos/red-dress-rome.jpg",        title:"Red dress, big bus",      place:"Rome, Italy",                  set:"People",  ratio:0.667 },
+  { src:"photos/red-dress-rome.jpg",        title:"Red dress, big bus",      place:"Rome, Italy",                  set:"People",  ratio:0.667, focus:"50% 88%" },
   { src:"photos/st-peters.jpg",             title:"St. Peter's",             place:"Vatican City",                 set:"People",  ratio:1.5 },
   { src:"photos/bryce-trail-sign.jpg",      title:"Sunset Point trail",      place:"Bryce Canyon, UT",             set:"People",  ratio:1.5 },
 

@@ -66,14 +66,14 @@
   /* ---------- home ---------- */
   if(page==="home"){
     const hero = PHOTOS.find(p=>p.featured) || PHOTOS[0];
-    $("hero").innerHTML = `<img src="${srcOf(hero, 2100, innerWidth<760 ? 0.8 : 21/9)}" alt="${hero.title}">`;
+    $("hero").innerHTML = `<img src="${srcOf(hero, 2100, innerWidth<760 ? 0.8 : 21/9)}" alt="${hero.title}" style="object-position:${hero.focus||"center"}">`;
     $("heroTitle").textContent = hero.title; $("heroPlace").textContent = hero.place;
     $("hero").onclick = () => openLb([hero], 0);
     $("sets").innerHTML = SETS.map(s => {
       const items = PHOTOS.filter(p=>p.set===s);
       const cover = PHOTOS.find(p=>p.title===COVERS[s]) || items[0];
       return `<a class="set-card" href="${s.toLowerCase()}.html">
-        <div class="frame"><img loading="lazy" src="${srcOf(cover, 900, 0.8)}" alt="${s}"></div>
+        <div class="frame"><img loading="lazy" src="${srcOf(cover, 900, 0.8)}" alt="${s}" style="object-position:${cover.focus||"center"}"></div>
         <h3>${s}</h3><div class="label">${items.length} photographs</div></a>`;
     }).join("");
   }
