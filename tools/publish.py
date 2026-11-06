@@ -42,7 +42,9 @@ import time
 from datetime import datetime
 from pathlib import Path
 
-from PIL import Image, ImageOps
+import io
+
+from PIL import Image, ImageCms, ImageFilter, ImageOps
 
 HERE = Path(__file__).resolve().parent
 
@@ -54,7 +56,7 @@ def load_config():
         "REPO_DIR": str(Path.home() / "nduwimanaclaude-site"),
         "SITE_URL": "https://nduwimanaclaude.com",
         "MAX_EDGE": "2400",
-        "JPEG_QUALITY": "82",
+        "JPEG_QUALITY": "86",
         "GIT_PUSH": "1",
     }
     f = HERE / "config.env"
@@ -73,8 +75,12 @@ def load_config():
 CFG = load_config()
 WEBSITE = Path(CFG["WEBSITE_DIR"])
 REPO = Path(CFG["REPO_DIR"])
-MAX_EDGE = int(CFG["MAX_EDGE"])
+MAX_EDGE = int(CFG["MAX_EDGE"])          # full-size (lightbox, big screens)
+SMALL_EDGE = int(CFG.get("SMALL_EDGE", "1200"))  # grids, covers, phones
 QUALITY = int(CFG["JPEG_QUALITY"])
+MAX_BYTES = {"full": 1_500_000, "small": 450_000}  # size guard per file
+MIN_QUALITY = 72
+PIPELINE_VERSION = "v2"  # bump to re-process every photo with new settings
 IMG_EXT = {".jpg", ".jpeg", ".png", ".tif", ".tiff", ".webp"}
 
 DEFAULT_ORDER = ["Places", "People", "Streets"]
@@ -160,15 +166,53 @@ def fingerprint(state):
 
 
 # ------------------------------------------------------------ processing ---
-def process_image(src, dest):
+SRGB = ImageCms.createProfile("sRGB")
+SRGB_ICC = ImageCms.ImageCmsProfile(SRGB).tobytes()
+
+
+def to_srgb(im):
+    """Convert from whatever color space the export used (Display P3, Adobe RGB...)
+    to sRGB so colors look the same in every browser."""
+    icc = im.info.get("icc_profile")
+    if icc:
+        try:
+            src = ImageCms.ImageCmsProfile(io.BytesIO(icc))
+            if im.mode not in ("RGB", "CMYK"):
+                im = im.convert("RGB")
+            return ImageCms.profileToProfile(im, src, SRGB, outputMode="RGB",
+                                             renderingIntent=0)  # 0 = perceptual
+        except Exception as e:
+            log(f"    (color profile unreadable, assuming sRGB: {e})")
+    return im.convert("RGB")
+
+
+def save_sized(im, dest, edge, budget):
+    w, h = im.size
+    scale = min(1.0, edge / max(w, h))
+    out = im.resize((max(1, round(w * scale)), max(1, round(h * scale))), Image.LANCZOS) if scale < 1 else im.copy()
+    if scale < 1:  # light "sharpen for screen" after downsizing
+        out = out.filter(ImageFilter.UnsharpMask(radius=0.6 if edge <= 1400 else 0.8, percent=55, threshold=2))
+    q = QUALITY
+    while True:
+        buf = io.BytesIO()
+        # subsampling=0 keeps full color detail (crisp reds/oranges, signs, sunsets).
+        # Only the sRGB profile is embedded; GPS and all other metadata are dropped.
+        out.save(buf, "JPEG", quality=q, subsampling=0, optimize=True, progressive=True, icc_profile=SRGB_ICC)
+        if buf.tell() <= budget or q <= MIN_QUALITY:
+            break
+        q -= 3
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    dest.write_bytes(buf.getvalue())
+    return out.size
+
+
+def process_image(src, dest_full, dest_small):
     with Image.open(src) as im:
         im = ImageOps.exif_transpose(im)          # respect camera rotation
-        im = im.convert("RGB")
-        im.thumbnail((MAX_EDGE, MAX_EDGE), Image.LANCZOS)
-        dest.parent.mkdir(parents=True, exist_ok=True)
-        # No exif/icc passed in -> GPS and all other metadata are stripped.
-        im.save(dest, "JPEG", quality=QUALITY, optimize=True, progressive=True)
-        return im.size
+        im = to_srgb(im)
+        size = save_sized(im, dest_full, MAX_EDGE, MAX_BYTES["full"])
+        save_sized(im, dest_small, SMALL_EDGE, MAX_BYTES["small"])
+        return size
 
 
 def build(state):
@@ -181,16 +225,17 @@ def build(state):
     items = sorted(state["items"], key=lambda x: (-x["mtime"], x["path"].name.lower()))
     for it in items:
         title, place, flags = parse_name(it["path"].stem)
-        digest = hashlib.sha1(f'{it["path"].relative_to(WEBSITE)}|{it["size"]}|{it["mtime"]}'.encode()).hexdigest()[:8]
+        digest = hashlib.sha1(f'{PIPELINE_VERSION}|{MAX_EDGE}|{SMALL_EDGE}|{QUALITY}|{it["path"].relative_to(WEBSITE)}|{it["size"]}|{it["mtime"]}'.encode()).hexdigest()[:8]
         base = f'{slugify(it["set"])}-{slugify(title)}'
         name = f"{base}-{digest}.jpg"
         while name in used:
             name = f"{base}-{digest}{len(used)}.jpg"
         used.add(name)
-        dest = photos_dir / name
-        if not dest.exists():
+        small = name[:-4] + "-s.jpg"
+        dest, dest_small = photos_dir / name, photos_dir / small
+        if not (dest.exists() and dest_small.exists()):
             try:
-                w, h = process_image(it["path"], dest)
+                w, h = process_image(it["path"], dest, dest_small)
                 log(f"  + {it['set']}/{it['path'].name}")
             except Exception as e:
                 log(f"  ! skipped {it['path'].name}: {e}")
@@ -198,8 +243,8 @@ def build(state):
         else:
             with Image.open(dest) as im:
                 w, h = im.size
-        keep.add(name)
-        p = {"src": f"photos/{name}", "title": title, "place": place,
+        keep.update({name, small})
+        p = {"src": f"photos/{name}", "srcSmall": f"photos/{small}", "title": title, "place": place,
              "set": it["set"], "ratio": round(w / h, 3)}
         if title in focus:
             p["focus"] = focus[title]
