@@ -1,8 +1,11 @@
 /* Shared header, footer, galleries and lightbox. You shouldn't need to edit this. */
 (function(){
   const page = document.body.dataset.page;          // home | places | people | streets | about | journal | contact
-  const SETS = ["Places","People","Streets"];
-  const isWork = page==="home" || SETS.map(s=>s.toLowerCase()).includes(page);
+  // Collections come from photos.js (generated from the NAS folders).
+  const CATS = (typeof SETS !== "undefined" && SETS.length) ? SETS : [...new Set(PHOTOS.map(p=>p.set))];
+  const RESERVED = ["index","about","journal","contact","404","tools","photos","content","site","style","sitemap","robots"];
+  const slugify = s => { let x = s.toLowerCase().replace(/['’]/g,"").replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"") || "photo"; return RESERVED.includes(x) ? x+"-photos" : x; };
+  const isWork = page==="home" || CATS.some(s=>slugify(s)===page);
 
   /* ---------- header + footer ---------- */
   const nav = [["index.html","Work",isWork],["about.html","About",page==="about"],["journal.html","Journal",page==="journal"],["contact.html","Contact",page==="contact"]];
@@ -69,19 +72,19 @@
     $("hero").innerHTML = `<img src="${srcOf(hero, 2100, innerWidth<760 ? 0.8 : 21/9)}" alt="${hero.title}" style="object-position:${hero.focus||"center"}">`;
     $("heroTitle").textContent = hero.title; $("heroPlace").textContent = hero.place;
     $("hero").onclick = () => openLb([hero], 0);
-    $("sets").innerHTML = SETS.map(s => {
+    $("sets").innerHTML = CATS.map(s => {
       const items = PHOTOS.filter(p=>p.set===s);
-      const cover = PHOTOS.find(p=>p.title===COVERS[s]) || items[0];
-      return `<a class="set-card" href="${s.toLowerCase()}.html">
+      const cover = items.find(p=>typeof COVERS!=="undefined" && p.title===COVERS[s]) || items[0];
+      return `<a class="set-card" href="${slugify(s)}.html">
         <div class="frame"><img loading="lazy" src="${srcOf(cover, 900, 0.8)}" alt="${s}" style="object-position:${cover.focus||"center"}"></div>
         <h3>${s}</h3><div class="label">${items.length} photographs</div></a>`;
     }).join("");
   }
 
   /* ---------- collection pages ---------- */
-  const set = SETS.find(s => s.toLowerCase()===page);
+  const set = CATS.find(s => slugify(s)===page);
   if(set){
-    $("tabs").innerHTML = SETS.map(s=>`<a href="${s.toLowerCase()}.html" class="${s===set?"on":""}">${s}</a>`).join("");
+    $("tabs").innerHTML = CATS.map(s=>`<a href="${slugify(s)}.html" class="${s===set?"on":""}">${s}</a>`).join("");
     const items = PHOTOS.filter(p=>p.set===set);
     $("gallery").innerHTML = items.map((p,i)=>`
       <figure class="tile" data-i="${i}">
@@ -92,10 +95,10 @@
   }
 
   /* ---------- about ---------- */
-  if(page==="about") $("portrait").innerHTML = `<img src="${PORTRAIT.src || placeholder({...PORTRAIT, ratio:0.8}, 800)}" alt="Portrait of Nduwimana Claude">`;
+  if(page==="about" && typeof PORTRAIT!=="undefined") $("portrait").innerHTML = `<img src="${PORTRAIT.src || placeholder({...PORTRAIT, ratio:0.8}, 800)}" alt="Portrait of Nduwimana Claude">`;
 
   /* ---------- journal ---------- */
-  if(page==="journal"){
+  if(page==="journal" && typeof POSTS!=="undefined"){
     $("posts").innerHTML = POSTS.map(p=>`<a class="post" href="${p.url}">
       <span class="label">${p.date}</span><div><h3>${p.title}</h3><p>${p.blurb}</p></div><span class="label">Read →</span></a>`).join("");
     $("subForm").addEventListener("submit", e => {

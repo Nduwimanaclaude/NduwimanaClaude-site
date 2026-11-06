@@ -10,6 +10,8 @@
    - focus (optional) moves the crop on covers/hero, e.g. "50% 88%" = lower middle.
    - Leave src empty ("") to show a placeholder.
    ============================================================ */
+const SETS = ["Places", "People", "Streets"];
+const BLURBS = {};
 const PHOTOS = [
   { src:"photos/blue-ridge-sunset.jpg",     title:"Last light",              place:"Blue Ridge Parkway, VA",       set:"Places",  ratio:1.5,   featured:true },
   { src:"photos/antelope-canyon.jpg",       title:"Antelope Canyon",         place:"Page, AZ",                     set:"Places",  ratio:0.75 },
@@ -35,10 +37,4 @@ const PHOTOS = [
 /* Cover photo for each collection card on the home page (by title). */
 const COVERS = { Places:"Antelope Canyon", People:"Red dress, big bus", Streets:"Place des Vosges" };
 
-/* Your portrait on the About page. */
-const PORTRAIT = { src:"", tone:["#c8b8a6","#3a332c"] };
 
-/* Journal entries: paste in links to your Substack posts as you publish them. */
-const POSTS = [
-  { date:"Coming soon", title:"Why I started shooting again", blurb:"The first post. A little about the camera, the city, and the plan.", url:"https://nduwimanaclaude.substack.com" }
-];
