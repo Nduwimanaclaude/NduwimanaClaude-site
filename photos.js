@@ -2,7 +2,7 @@
    GENERATED FILE. Don't edit by hand: it's rebuilt from the
    Website folders on the NAS every few minutes.
    To change photos, add/remove/rename files in those folders.
-   Last built: 2026-11-06 22:46
+   Last built: 2026-11-06 22:49
    ============================================================ */
 const SETS = ["Places", "People", "Streets"];
 const BLURBS = {"Places": "Landscapes, rivers, parks, and the quiet edges of cities.", "People": "Friends, strangers, and the moments in between.", "Streets": "Walls, corners, storefronts, and weather."};
@@ -24,5 +24,5 @@ const PHOTOS = [
   {"src": "photos/places-double-arch-76b22367.jpg", "srcSmall": "photos/places-double-arch-76b22367-s.jpg", "title": "Double Arch", "place": "Arches, UT", "set": "Places", "ratio": 1.5},
   {"src": "photos/people-red-dress-big-bus-01ddf131.jpg", "srcSmall": "photos/people-red-dress-big-bus-01ddf131-s.jpg", "title": "Red dress, big bus", "place": "Rome, Italy", "set": "People", "ratio": 0.667, "focus": "50% 88%"},
   {"src": "photos/people-sunset-point-trail-b47cb172.jpg", "srcSmall": "photos/people-sunset-point-trail-b47cb172-s.jpg", "title": "Sunset Point trail", "place": "Bryce Canyon, UT", "set": "People", "ratio": 1.5},
-  {"src": "photos/people-st-peters-37f0b49c.jpg", "srcSmall": "photos/people-st-peters-37f0b49c-s.jpg", "title": "St. Peter's", "place": "Vatican City", "set": "People", "ratio": 1.5}
+  {"src": "photos/people-st-peters-d64df896.jpg", "srcSmall": "photos/people-st-peters-d64df896-s.jpg", "title": "St. Peter's", "place": "Vatican City, Italy", "set": "People", "ratio": 1.5}
 ];
