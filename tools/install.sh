@@ -19,7 +19,7 @@ bold "2/6  Connecting to the NAS Website folder"
 read -rp "NAS address [100.64.254.116]: " NAS_IP; NAS_IP=${NAS_IP:-100.64.254.116}
 read -rp "NFS path of the Website share [/volume1/Website]: " NAS_PATH; NAS_PATH=${NAS_PATH:-/volume1/Website}
 sudo mkdir -p "$MOUNT"
-LINE="$NAS_IP:$NAS_PATH $MOUNT nfs ro,soft,timeo=50,nofail,_netdev,x-systemd.automount,x-systemd.idle-timeout=600 0 0"
+LINE="$NAS_IP:$NAS_PATH $MOUNT nfs ro,vers=4.1,soft,timeo=50,nofail,_netdev,x-systemd.automount,x-systemd.idle-timeout=600 0 0"
 sudo sed -i "\# $MOUNT #d" /etc/fstab
 echo "$LINE" | sudo tee -a /etc/fstab >/dev/null
 sudo systemctl daemon-reload
@@ -54,7 +54,7 @@ echo
 echo "Then on GitHub: repo Settings > Deploy keys > Add deploy key"
 echo "  Title: claude14   Key: (paste)   [x] Allow write access   > Add key"
 read -rp "Press Enter once it's added... " _
-until ssh -T github-site 2>&1 | grep -q "successfully authenticated"; do
+until { ssh -T github-site 2>&1 || true; } | grep -q "successfully authenticated"; do
   read -rp "GitHub didn't accept the key yet. Add it (with write access), then press Enter... " _
 done
 echo "Key works."

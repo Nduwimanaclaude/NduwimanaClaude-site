@@ -10,3 +10,8 @@ const PORTRAIT = { src:"", tone:["#c8b8a6","#3a332c"] };
 const POSTS = [
   { date:"Coming soon", title:"Why I started shooting again", blurb:"The first post. A little about the camera, the city, and the plan.", url:"https://nduwimanaclaude.substack.com" }
 ];
+
+/* Substack: once nduwimanaclaude.substack.com is set up, change live:false to
+   live:true. That turns on the real signup box (footer + Journal page) and the
+   Substack icon in the footer. */
+const SUBSTACK = { url:"https://nduwimanaclaude.substack.com", live:false };

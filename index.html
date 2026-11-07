@@ -5,9 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Nduwimana Claude · Photography</title>
 <meta name="description" content="Photography by Nduwimana Claude.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Nduwimana Claude · Photography">
+<meta property="og:description" content="Photography by Nduwimana Claude.">
+<meta property="og:image" content="https://nduwimanaclaude.com/photos/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body data-page="home">
@@ -18,6 +25,13 @@
 </div>
 <div class="intro">
   <p>Pictures of places, people, and the in-between moments. <em>Made between St. Louis, Dallas, and wherever the weekend goes.</em></p>
+</div>
+<div class="wrap strip-wrap">
+  <div class="strip-head">
+    <div class="label">Selected work</div>
+    <div class="strip-nav"><button id="stripPrev" aria-label="Previous photos">‹</button><button id="stripNext" aria-label="Next photos">›</button></div>
+  </div>
+  <div class="strip" id="strip"><div class="strip-track" id="stripTrack"></div></div>
 </div>
 <div class="wrap">
   <div class="label" style="margin-bottom:20px">Collections</div>
