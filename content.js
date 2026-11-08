@@ -8,7 +8,7 @@ const PORTRAIT = { src:"", tone:["#c8b8a6","#3a332c"] };
 
 /* Journal entries: paste in links to your Substack posts as you publish them. */
 const POSTS = [
-  { date:"Coming soon", title:"Why I started shooting again", blurb:"The first post. A little about the camera, the city, and the plan.", url:"https://nduwimanaclaude.substack.com" }
+  { date:"December 2026", title:"Why I started shooting again", blurb:"The first post. A little about the camera, the city, and the plan.", url:"https://nduwimanaclaude.substack.com" }
 ];
 
 /* Substack: once nduwimanaclaude.substack.com is set up, change live:false to
