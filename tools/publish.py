@@ -461,6 +461,7 @@ def write_photos_js(photos, sets, covers, blurbs):
    To change photos, add/remove/rename files in those folders.
    Last built: {datetime.now():%Y-%m-%d %H:%M}
    ============================================================ */
+const UPDATED = {js(datetime.now().strftime('%Y-%m-%d'))};
 const SETS = {js(sets)};
 const BLURBS = {js(blurbs)};
 const COVERS = {js(covers)};

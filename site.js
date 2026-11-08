@@ -51,7 +51,7 @@
       </div>
       <div class="wrap foot-mark" aria-hidden="true"><svg viewBox="0 0 1000 96" preserveAspectRatio="xMidYMid meet"><text x="0" y="84" textLength="1000" lengthAdjust="spacingAndGlyphs">NDUWIMANA CLAUDE</text></svg></div>
       <div class="wrap foot-legal">
-        <span>© ${new Date().getFullYear()} Nduwimana Claude. All rights reserved.</span>
+        <span>© ${new Date().getFullYear()} Nduwimana Claude. All rights reserved.${typeof UPDATED!=="undefined" ? ` <span class="updated">· Photos updated ${new Date(UPDATED+"T12:00").toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"})}</span>` : ""}</span>
         <a href="sitemap.html">Sitemap</a>
       </div>
     </footer>
@@ -141,7 +141,7 @@
     if(!N){ $("strip").parentElement.style.display="none"; return; }
     const copies = N > 1 ? 3 : 1;
     const all = Array.from({length:copies}, () => mix).flat();
-    track.innerHTML = all.map((p,k)=>`<figure class="strip-item" data-k="${k}" style="aspect-ratio:${p.ratio||1.5};${blur(p)}">${pic(p, smallOf(p, 900), k<N*2?"":'loading="lazy"')}</figure>`).join("");
+    track.innerHTML = all.map((p,k)=>`<figure class="strip-item" data-k="${k}" style="aspect-ratio:${p.ratio||1.5};${blur(p)}">${pic(p, smallOf(p, 900), k<N*2?"":'loading="lazy"')}<figcaption class="strip-cap">${esc(p.title||"")}${p.place?`<span>${esc(p.place)}</span>`:""}</figcaption></figure>`).join("");
     reveal(track);
     track.querySelectorAll(".strip-item").forEach(el => el.onclick = () => openLb(mix, +el.dataset.k % N));
     if(N < 2){ $("stripPrev").hidden = $("stripNext").hidden = true; return; }

@@ -4,6 +4,7 @@
    To change photos, add/remove/rename files in those folders.
    Last built: 2026-11-06 23:04
    ============================================================ */
+const UPDATED = "2026-11-06";
 const SETS = ["Places", "People", "Streets"];
 const BLURBS = {"Places": "Landscapes, rivers, parks, and the quiet edges of cities.", "People": "Friends, strangers, and the moments in between.", "Streets": "Walls, corners, storefronts, and weather."};
 const COVERS = {"Places": "Antelope Canyon", "People": "Red dress, big bus", "Streets": "Place des Vosges"};

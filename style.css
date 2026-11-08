@@ -61,7 +61,12 @@ body.menu .burger i:nth-child(3){transform:translateY(-5px) rotate(-45deg)}
 .strip-nav button:hover{border-color:var(--ink);background:#fff}
 .strip{overflow:hidden}
 .strip-track{position:relative;display:flex;gap:12px;will-change:transform}
-.strip-item{flex:0 0 auto;height:var(--sh,420px);background:#d9d4cb center/cover no-repeat;cursor:zoom-in;overflow:hidden}
+.strip-cap{position:absolute;left:0;right:0;bottom:0;padding:28px 14px 12px;background:linear-gradient(transparent,rgba(0,0,0,.55));color:#fff;font:400 13px/1.35 var(--sans);letter-spacing:.02em;opacity:0;transition:opacity .25s;pointer-events:none}
+.strip-cap span{display:block;font-size:11px;opacity:.8;letter-spacing:.06em;text-transform:uppercase;margin-top:2px}
+.strip-item:hover .strip-cap{opacity:1}
+@media (hover:none){.strip-cap{opacity:1}}
+.foot-legal .updated{opacity:.75}
+.strip-item{position:relative;flex:0 0 auto;height:var(--sh,420px);background:#d9d4cb center/cover no-repeat;cursor:zoom-in;overflow:hidden}
 
 /* collection tabs on gallery pages */
 .tabs{display:flex;gap:24px;flex-wrap:wrap;font-size:12px;letter-spacing:.16em;text-transform:uppercase;margin-bottom:28px}
