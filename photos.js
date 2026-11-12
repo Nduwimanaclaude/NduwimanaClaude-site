@@ -2,7 +2,7 @@
    GENERATED FILE. Don't edit by hand: it's rebuilt from the
    Website folders on the NAS every few minutes.
    To change photos, add/remove/rename files in those folders.
-   Last built: 2026-11-11 22:57
+   Last built: 2026-11-11 23:09
    ============================================================ */
 const UPDATED = "2026-11-11";
 const SETS = ["Places", "People", "Streets"];
