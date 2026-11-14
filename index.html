@@ -1,45 +1,34 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Nduwimana Claude · Photography</title>
-<meta name="description" content="Photography by Nduwimana Claude.">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Nduwimana Claude · Photography">
-<meta property="og:description" content="Photography by Nduwimana Claude.">
-<meta property="og:image" content="https://nduwimanaclaude.com/photos/og.jpg">
-<meta name="twitter:card" content="summary_large_image">
-<link rel="icon" href="favicon.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="apple-touch-icon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
-</head>
-<body data-page="home">
-<main>
-<div class="wrap">
-  <div class="hero-img" id="hero"></div>
-  <div class="hero-cap"><span id="heroTitle"></span><span id="heroPlace"></span></div>
-</div>
-<div class="intro">
-  <p>Pictures of places, people, and the in-between moments. <em>Made between St. Louis, Dallas, and wherever the weekend goes.</em></p>
-</div>
-<div class="wrap strip-wrap">
-  <div class="strip-head">
-    <div class="label">Selected work</div>
-    <div class="strip-nav"><button id="stripPrev" aria-label="Previous photos">‹</button><button id="stripNext" aria-label="Next photos">›</button></div>
-  </div>
-  <div class="strip" id="strip"><div class="strip-track" id="stripTrack"></div></div>
-</div>
-<div class="wrap">
-  <div class="label" style="margin-bottom:20px">Collections</div>
-  <div class="sets" id="sets"></div>
-</div>
-</main>
-<script src="photos.js"></script>
-<script src="content.js"></script>
-<script src="site.js"></script>
-</body>
-</html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nduwimana Claude · Photography</title><meta name="description" content="Photography by Nduwimana Claude.">
+<meta property="og:type" content="website"><meta property="og:title" content="Nduwimana Claude · Photography"><meta property="og:image" content="https://nduwimanaclaude.com/photos/og.jpg">
+<meta name="twitter:card" content="summary_large_image"><link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTIiIGZpbGw9IiMxYjFhMTgiLz48dGV4dCB4PSIzMiIgeT0iNDIiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJIZWx2ZXRpY2EgTmV1ZSxIZWx2ZXRpY2EsQXJpYWwsc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9IjYwMCIgZm9udC1zaXplPSIyNyIgbGV0dGVyLXNwYWNpbmc9Ii0xIiBmaWxsPSIjZjZmNGYwIj5OQzwvdGV4dD48L3N2Zz4K">
+<!-- generated cover page (Website/_site.json "cover"). Self-contained so it works while the rest of the site needs a sign-in. -->
+<style>
+*{box-sizing:border-box;margin:0;padding:0}html,body{height:100%;background:#0d0c0b;color:#f3efe8;font-family:system-ui,-apple-system,"Helvetica Neue",sans-serif;overflow:hidden}
+.cv{position:fixed;inset:0}.cv img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 1.6s ease;transform:scale(1.04)}
+.cv img.on{opacity:1;animation:kb 8s ease-out forwards}@keyframes kb{from{transform:scale(1.04)}to{transform:scale(1.10)}}
+.shade{position:fixed;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.35),rgba(0,0,0,.05) 35%,rgba(0,0,0,.15) 65%,rgba(0,0,0,.6))}
+.top{position:fixed;top:0;left:0;right:0;padding:28px 32px;display:flex;justify-content:space-between;align-items:center;gap:16px}
+.name{font-family:"Cormorant Garamond",Georgia,serif;font-size:28px;font-weight:500;letter-spacing:.01em}.name span{font-style:italic;opacity:.75;font-size:21px;margin-left:8px}
+.links{display:flex;gap:20px;font-size:12px;letter-spacing:.16em;text-transform:uppercase}.links a{color:inherit;text-decoration:none;opacity:.85}
+.mid{position:fixed;left:0;right:0;bottom:84px;text-align:center;padding:0 24px}
+.enter{display:inline-block;color:#f3efe8;text-decoration:none;border:1px solid rgba(243,239,232,.8);padding:14px 26px;font-size:12px;letter-spacing:.18em;text-transform:uppercase;backdrop-filter:blur(4px);background:rgba(0,0,0,.15)}
+.enter:hover{background:#f3efe8;color:#111}.cap{position:fixed;left:32px;bottom:28px;font-size:12px;letter-spacing:.04em;opacity:.85}.cap b{font-weight:500}
+.dots{position:fixed;right:32px;bottom:30px;display:flex;gap:6px}.dots i{width:6px;height:6px;border-radius:50%;background:rgba(243,239,232,.4)}.dots i.on{background:#f3efe8}
+@media(max-width:640px){.top{padding:20px}.name{font-size:23px}.links{display:none}.cap{left:20px;right:20px;bottom:20px;text-align:center}.dots{display:none}.mid{bottom:70px}}
+@media(prefers-reduced-motion:reduce){.cv img.on{animation:none}}
+</style></head><body>
+<div class="cv" id="cv"></div><div class="shade"></div>
+<div class="top"><div class="name">Nduwimana Claude<span>Photography</span></div><div class="links"><a href="https://www.instagram.com/_claude_photography/" rel="noopener">Instagram</a><a href="mailto:nclaude@nduwimanaclaude.com" rel="noopener">Email</a></div></div>
+<div class="mid"><a class="enter" href="work.html">View the work</a></div><div class="cap" id="cap"></div><div class="dots" id="dots"></div>
+<script>
+(function(){var P=[{"s": "photos/places-last-light-edac691e-s.jpg", "l": "photos/places-last-light-edac691e.jpg", "t": "Last light", "p": "Blue Ridge Parkway, VA", "f": "50% 50%"}, {"s": "photos/places-through-the-branches-58b21665-s.jpg", "l": "photos/places-through-the-branches-58b21665.jpg", "t": "Through the branches", "p": "Blue Ridge, VA", "f": "50% 50%"}, {"s": "photos/places-mabry-mill-0894fe93-s.jpg", "l": "photos/places-mabry-mill-0894fe93.jpg", "t": "Mabry Mill", "p": "Blue Ridge Parkway, VA", "f": "50% 50%"}, {"s": "photos/places-the-road-down-31e34a88-s.jpg", "l": "photos/places-the-road-down-31e34a88.jpg", "t": "The road down", "p": "Blue Ridge, VA", "f": "50% 50%"}, {"s": "photos/places-through-the-keyhole-5283a521-s.jpg", "l": "photos/places-through-the-keyhole-5283a521.jpg", "t": "Through the keyhole", "p": "Aventine Hill, Rome", "f": "50% 50%"}, {"s": "photos/streets-up-the-aventine-587aaafa-s.jpg", "l": "photos/streets-up-the-aventine-587aaafa.jpg", "t": "Up the Aventine", "p": "Rome, Italy", "f": "50% 50%"}, {"s": "photos/people-red-dress-big-bus-8d8fc3f9-s.jpg", "l": "photos/people-red-dress-big-bus-8d8fc3f9.jpg", "t": "Red dress, big bus", "p": "Rome, Italy", "f": "50% 88%"}, {"s": "photos/streets-santa-maria-maggiore-a72676b1-s.jpg", "l": "photos/streets-santa-maria-maggiore-a72676b1.jpg", "t": "Santa Maria Maggiore", "p": "Rome, Italy", "f": "50% 50%"}, {"s": "photos/people-st-peters-6db0ab4b-s.jpg", "l": "photos/people-st-peters-6db0ab4b.jpg", "t": "St. Peter's", "p": "Vatican City, Italy", "f": "50% 50%"}, {"s": "photos/streets-place-des-vosges-50a8f795-s.jpg", "l": "photos/streets-place-des-vosges-50a8f795.jpg", "t": "Place des Vosges", "p": "Paris, France", "f": "50% 50%"}, {"s": "photos/places-antelope-canyon-5c20d608-s.jpg", "l": "photos/places-antelope-canyon-5c20d608.jpg", "t": "Antelope Canyon", "p": "Page, AZ", "f": "50% 50%"}, {"s": "photos/places-the-amphitheater-8a306f6d-s.jpg", "l": "photos/places-the-amphitheater-8a306f6d.jpg", "t": "The amphitheater", "p": "Bryce Canyon, UT", "f": "50% 50%"}, {"s": "photos/streets-shared-use-path-ae620ddb-s.jpg", "l": "photos/streets-shared-use-path-ae620ddb.jpg", "t": "Shared use path", "p": "Bryce Canyon, UT", "f": "50% 50%"}, {"s": "photos/places-thors-hammer-151aee3c-s.jpg", "l": "photos/places-thors-hammer-151aee3c.jpg", "t": "Thor's Hammer", "p": "Bryce Canyon, UT", "f": "50% 50%"}, {"s": "photos/people-sunset-point-trail-2242386b-s.jpg", "l": "photos/people-sunset-point-trail-2242386b.jpg", "t": "Sunset Point trail", "p": "Bryce Canyon, UT", "f": "50% 50%"}, {"s": "photos/places-evening-pasture-15f8be05-s.jpg", "l": "photos/places-evening-pasture-15f8be05.jpg", "t": "Evening pasture", "p": "Utah", "f": "50% 50%"}, {"s": "photos/places-double-arch-afc62d28-s.jpg", "l": "photos/places-double-arch-afc62d28.jpg", "t": "Double Arch", "p": "Arches, UT", "f": "50% 50%"}],S=6*1000,cv=document.getElementById("cv"),cap=document.getElementById("cap"),dots=document.getElementById("dots"),i=0,big=innerWidth>900;
+if(!P.length){cv.style.background="#222";return;}
+function e(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;")}
+P.forEach(function(p,k){var im=new Image();im.alt=p.t;im.decoding="async";if(k>1)im.loading="lazy";im.src=big?p.l:p.s;im.style.objectPosition=p.f;cv.appendChild(im);dots.insertAdjacentHTML("beforeend","<i></i>");});
+function show(n){var ims=cv.children,ds=dots.children;for(var k=0;k<ims.length;k++){ims[k].classList.toggle("on",k===n);if(ds[k])ds[k].classList.toggle("on",k===n);}
+ cap.innerHTML=P[n].t?("<b>"+e(P[n].t)+"</b>"+(P[n].p?" &middot; "+e(P[n].p):"")):"";}
+show(0);if(P.length>1)setInterval(function(){i=(i+1)%P.length;show(i);},S);
+})();
+</script></body></html>

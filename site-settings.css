@@ -1,0 +1,4 @@
+/* GENERATED from Website/_site.json on the NAS. Edit that file, not this one. Built 2026-11-14 17:58 */
+:root{--bg:#f6f4f0;--ink:#1b1a18;--muted:#77736b;--line:#dcd7ce;--serif:"Cormorant Garamond", Georgia, serif;--sans:"Inter", system-ui, -apple-system, sans-serif;--hs:1.0}
+body{font-size:16.0px}.split .body p{font-size:16.0px}
+.page-head h1{font-size:calc(clamp(40px,6vw,72px) * var(--hs))}.intro p{font-size:calc(clamp(24px,3vw,34px) * var(--hs))}.set-over h3{font-size:calc(clamp(40px,4.4vw,60px) * var(--hs))}.post h3{font-size:calc(26px * var(--hs))}.contact-line{font-size:calc(clamp(24px,4vw,36px) * var(--hs))}
