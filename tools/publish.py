@@ -174,15 +174,30 @@ def scan():
         except Exception as e:
             log(f"Couldn't read _settings.json ({e}); ignoring it.")
     cats = [d for d in WEBSITE.iterdir()
-            if d.is_dir() and not d.name.startswith(("_", ".", "@", "#"))]
+            if d.is_dir() and not d.name.startswith(("_", ".", "@", "#")) and "past life" not in d.name.lower()]
     order = settings.get("order") or DEFAULT_ORDER
     cats.sort(key=lambda d: (order.index(d.name) if d.name in order else len(order), d.name.lower()))
     items = []
     for d in cats:
         for f in d.iterdir():
-            if f.is_file() and f.suffix.lower() in IMG_EXT and not f.name.startswith((".", "_")):
+            if f.is_file() and f.suffix.lower() in IMG_EXT and not f.name.startswith((".", "_")) and "past life" not in f.name.lower():
                 st = f.stat()
                 items.append({"path": f, "set": d.name, "mtime": st.st_mtime, "size": st.st_size})
+    # C5: optional _cover folder (photos only for the cover page) and _site.json (text, fonts, colors, cover)
+    cf = WEBSITE / "_cover"
+    if cf.is_dir():
+        for f in cf.iterdir():
+            if f.is_file() and f.suffix.lower() in IMG_EXT and not f.name.startswith((".", "_")) and "past life" not in f.name.lower():
+                st = f.stat()
+                items.append({"path": f, "set": "_cover", "mtime": st.st_mtime, "size": st.st_size})
+    site = {}
+    sj = WEBSITE / "_site.json"
+    if sj.exists():
+        try:
+            site = json.loads(sj.read_text())
+        except Exception as e:
+            log(f"Couldn't read _site.json ({e}); using the built-in text and style.")
+    settings = dict(settings, _site=site)
     return {"cats": [d.name for d in cats], "items": items, "settings": settings}
 
 
@@ -404,6 +419,12 @@ def build(state):
         log("Found zero photos in the Website folders. Refusing to wipe the site.")
         return False
 
+    cover_pool = [p for p in photos if p["set"] == "_cover"]  # C5: cover-only photos stay off the collections
+    photos = [p for p in photos if p["set"] != "_cover"]
+    if not photos:
+        log("Found zero photos in the Website folders. Refusing to wipe the site.")
+        return False
+
     # remove photos that are no longer in the folders
     keep.add("og.jpg")
     for f in photos_dir.iterdir():
@@ -435,6 +456,11 @@ def build(state):
     write_photos_js(photos, sets, covers, {s: blurbs.get(s, "") for s in sets})
     write_collection_pages(sets, blurbs)
     write_sitemap(sets)
+    try:  # C5: Website/_site.json -> fonts, colors, text, cover page
+        import site_extras
+        site_extras.write_site_extras(REPO, state["settings"].get("_site") or {}, photos, cover_pool or photos, CFG["SITE_URL"], log)
+    except Exception as e:
+        log(f"  (site settings skipped: {e})")
     return True
 
 
@@ -511,7 +537,7 @@ PAGE_TMPL = """<!DOCTYPE html>
 </html>
 """
 
-RESERVED = {"index", "about", "journal", "contact", "now", "links", "404", "tools", "photos", "content", "site", "style", "sitemap", "robots", "favicon", "apple-touch-icon"}
+RESERVED = {"index", "about", "journal", "contact", "now", "links", "404", "tools", "photos", "content", "site", "style", "sitemap", "robots", "favicon", "apple-touch-icon", "work", "site-settings", "site-text"}
 
 
 def write_collection_pages(sets, blurbs):
@@ -536,7 +562,7 @@ def write_collection_pages(sets, blurbs):
 
 def write_sitemap(sets):
     today = datetime.now().strftime("%Y-%m-%d")
-    pages = [""] + [slugify(s) if slugify(s) not in RESERVED else slugify(s) + "-photos" for s in sets] + ["about", "journal", "now", "contact", "sitemap"]
+    pages = [""] + [slugify(s) if slugify(s) not in RESERVED else slugify(s) + "-photos" for s in sets] + ["work", "about", "journal", "now", "contact", "sitemap"]
     urls = "\n".join(f"  <url><loc>{CFG['SITE_URL']}/{p}</loc><lastmod>{today}</lastmod></url>" for p in pages)
     (REPO / "sitemap.xml").write_text(f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{urls}\n</urlset>\n')
 

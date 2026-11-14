@@ -3,7 +3,7 @@
   const page = document.body.dataset.page;          // home | <collection> | about | journal | now | contact | sitemap
   // Collections come from photos.js (generated from the NAS folders).
   const CATS = (typeof SETS !== "undefined" && SETS.length) ? SETS : [...new Set(PHOTOS.map(p=>p.set))];
-  const RESERVED = ["index","about","journal","contact","now","links","404","tools","photos","content","site","style","sitemap","robots","favicon","apple-touch-icon"];
+  const RESERVED = ["index","about","journal","contact","now","links","404","tools","photos","content","site","style","sitemap","robots","favicon","apple-touch-icon","work","site-settings","site-text"];
   const slugify = s => { let x = s.toLowerCase().replace(/['’]/g,"").replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"") || "photo"; return RESERVED.includes(x) ? x+"-photos" : x; };
   const isWork = page==="home" || CATS.some(s=>slugify(s)===page);
   const SUB = (typeof SUBSTACK !== "undefined") ? SUBSTACK : { url:"https://nduwimanaclaude.substack.com", live:false };
@@ -14,10 +14,10 @@
   const SS_ICON = `<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M4 3h16v2.6H4zM4 7.8h16v2.6H4zM4 12.6h16V22l-8-4.5L4 22z"/></svg>`;
 
   /* ---------- header ---------- */
-  const nav = [["index.html","Work",isWork],["about.html","About",page==="about"],["journal.html","Journal",page==="journal"],["contact.html","Contact",page==="contact"]];
+  const nav = [["work.html","Work",isWork],["about.html","About",page==="about"],["journal.html","Journal",page==="journal"],["contact.html","Contact",page==="contact"]];
   document.body.insertAdjacentHTML("afterbegin", `
     <header><div class="wrap bar">
-      <a href="index.html" class="logo">Nduwimana Claude<span>photography</span></a>
+      <a href="work.html" class="logo">Nduwimana Claude<span>photography</span></a>
       <nav class="main">${nav.map(([h,t,on])=>`<a href="${h}" class="${on?"on":""}">${t}</a>`).join("")}</nav>
       <button class="burger" aria-label="Menu"><i></i><i></i><i></i></button>
     </div></header>`);
@@ -28,7 +28,7 @@
     : `<a class="sub-btn" href="${SUB.url}" target="_blank" rel="noopener">Subscribe on Substack</a><p class="sub-note">The newsletter is launching soon.</p>`;
 
   /* ---------- footer ---------- */
-  const mapLinks = [["index.html","Work"], ...CATS.map(s=>[`${slugify(s)}.html`, s]), ["about.html","About"], ["journal.html","Journal"], ["now.html","Now"], ["contact.html","Contact"]];
+  const mapLinks = [["work.html","Work"], ...CATS.map(s=>[`${slugify(s)}.html`, s]), ["about.html","About"], ["journal.html","Journal"], ["now.html","Now"], ["contact.html","Contact"]];
   document.body.insertAdjacentHTML("beforeend", `
     <footer class="foot">
       <div class="wrap foot-grid">
