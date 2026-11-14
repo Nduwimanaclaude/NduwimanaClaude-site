@@ -548,7 +548,7 @@ def write_collection_pages(sets, blurbs):
         slug = slugify(s)
         if slug in RESERVED:
             slug = f"{slug}-photos"
-        fn = f"{slug}.html"
+        fn = f"work-{slug}.html"  # C5c: private pages all start with "work"
         (REPO / fn).write_text(PAGE_TMPL.format(name=html_escape(s), slug=slug, blurb=html_escape(blurbs.get(s, "")), site=CFG["SITE_URL"]))
         new.add(fn)
     for fn in old - new:
@@ -562,7 +562,7 @@ def write_collection_pages(sets, blurbs):
 
 def write_sitemap(sets):
     today = datetime.now().strftime("%Y-%m-%d")
-    pages = [""] + [slugify(s) if slugify(s) not in RESERVED else slugify(s) + "-photos" for s in sets] + ["work", "about", "journal", "now", "contact", "sitemap"]
+    pages = [""] + ["work-" + (slugify(s) if slugify(s) not in RESERVED else slugify(s) + "-photos") for s in sets] + ["work"] + ["work-" + n for n in ("about", "journal", "now", "contact", "sitemap")]
     urls = "\n".join(f"  <url><loc>{CFG['SITE_URL']}/{p}</loc><lastmod>{today}</lastmod></url>" for p in pages)
     (REPO / "sitemap.xml").write_text(f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{urls}\n</urlset>\n')
 

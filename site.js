@@ -14,7 +14,7 @@
   const SS_ICON = `<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M4 3h16v2.6H4zM4 7.8h16v2.6H4zM4 12.6h16V22l-8-4.5L4 22z"/></svg>`;
 
   /* ---------- header ---------- */
-  const nav = [["work.html","Work",isWork],["about.html","About",page==="about"],["journal.html","Journal",page==="journal"],["contact.html","Contact",page==="contact"]];
+  const nav = [["work.html","Work",isWork],["work-about.html","About",page==="about"],["work-journal.html","Journal",page==="journal"],["work-contact.html","Contact",page==="contact"]];
   document.body.insertAdjacentHTML("afterbegin", `
     <header><div class="wrap bar">
       <a href="work.html" class="logo">Nduwimana Claude<span>photography</span></a>
@@ -28,7 +28,7 @@
     : `<a class="sub-btn" href="${SUB.url}" target="_blank" rel="noopener">Subscribe on Substack</a><p class="sub-note">The newsletter is launching soon.</p>`;
 
   /* ---------- footer ---------- */
-  const mapLinks = [["work.html","Work"], ...CATS.map(s=>[`${slugify(s)}.html`, s]), ["about.html","About"], ["journal.html","Journal"], ["now.html","Now"], ["contact.html","Contact"]];
+  const mapLinks = [["work.html","Work"], ...CATS.map(s=>[`work-${slugify(s)}.html`, s]), ["work-about.html","About"], ["work-journal.html","Journal"], ["work-now.html","Now"], ["work-contact.html","Contact"]];
   document.body.insertAdjacentHTML("beforeend", `
     <footer class="foot">
       <div class="wrap foot-grid">
@@ -52,7 +52,7 @@
       <div class="wrap foot-mark" aria-hidden="true"><svg viewBox="0 0 1000 96" preserveAspectRatio="xMidYMid meet"><text x="0" y="84" textLength="1000" lengthAdjust="spacingAndGlyphs">NDUWIMANA CLAUDE</text></svg></div>
       <div class="wrap foot-legal">
         <span>© ${new Date().getFullYear()} Nduwimana Claude. All rights reserved.${typeof UPDATED!=="undefined" ? ` <span class="updated">· Photos updated ${new Date(UPDATED+"T12:00").toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"})}</span>` : ""}</span>
-        <a href="sitemap.html">Sitemap</a>
+        <a href="work-sitemap.html">Sitemap</a>
       </div>
     </footer>
     <div class="lb" id="lb" role="dialog" aria-modal="true">
@@ -126,7 +126,7 @@
     $("sets").innerHTML = CATS.map(s => {
       const items = PHOTOS.filter(p=>p.set===s);
       const cover = items.find(p=>typeof COVERS!=="undefined" && p.title===COVERS[s]) || items[0];
-      return `<a class="set-card ink-${cover.ink==="dark"?"dark":"light"}" href="${slugify(s)}.html">
+      return `<a class="set-card ink-${cover.ink==="dark"?"dark":"light"}" href="work-${slugify(s)}.html">
         <div class="frame" style="${blur(cover)}">${pic(cover, smallOf(cover, 900, 0.8), 'loading="lazy"')}</div>
         <div class="set-over"><h3>${esc(s)}</h3><span>View Gallery</span></div></a>`;
     }).join("");
@@ -177,7 +177,7 @@
   /* ---------- collection pages: justified rows ---------- */
   const set = CATS.find(s => slugify(s)===page);
   if(set){
-    $("tabs").innerHTML = CATS.map(s=>`<a href="${slugify(s)}.html" class="${s===set?"on":""}">${esc(s)}</a>`).join("");
+    $("tabs").innerHTML = CATS.map(s=>`<a href="work-${slugify(s)}.html" class="${s===set?"on":""}">${esc(s)}</a>`).join("");
     const items = PHOTOS.filter(p=>p.set===set);
     const el = $("gallery"); el.className = "jgrid";
     let lastW = 0;
@@ -216,8 +216,8 @@
   /* ---------- sitemap page ---------- */
   if(page==="sitemap" && $("sitemapList")){
     const groups = [
-      ["Work", [["index.html","Home"], ...CATS.map(s=>[`${slugify(s)}.html`, `${s} (${PHOTOS.filter(p=>p.set===s).length} photos)`])]],
-      ["About", [["about.html","About"],["now.html","Now"],["journal.html","Journal"],["contact.html","Contact"],["links.html","Links"]]],
+      ["Work", [["index.html","Home"], ...CATS.map(s=>[`work-${slugify(s)}.html`, `${s} (${PHOTOS.filter(p=>p.set===s).length} photos)`])]],
+      ["About", [["work-about.html","About"],["work-now.html","Now"],["work-journal.html","Journal"],["work-contact.html","Contact"],["links.html","Links"]]],
     ];
     $("sitemapList").innerHTML = groups.map(([g,ls]) => `<div class="sm-group"><div class="label">${g}</div><ul>${ls.map(([h,t])=>`<li><a href="${h}">${esc(t)}</a></li>`).join("")}</ul></div>`).join("");
   }

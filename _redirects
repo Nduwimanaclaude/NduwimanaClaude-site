@@ -1,2 +1,16 @@
 /tools/* / 301
 /tools / 301
+# C5c: old addresses -> work-* pages
+/about /work-about 301
+/journal /work-journal 301
+/now /work-now 301
+/contact /work-contact 301
+/sitemap /work-sitemap 301
+/places /work-places 301
+/people /work-people 301
+/streets /work-streets 301
+/about.html /work-about 301
+/journal.html /work-journal 301
+/now.html /work-now 301
+/contact.html /work-contact 301
+/sitemap.html /work-sitemap 301
