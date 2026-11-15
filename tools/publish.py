@@ -93,7 +93,7 @@ SMALL_EDGE = int(CFG.get("SMALL_EDGE", "1200"))  # grids, covers, phones
 QUALITY = int(CFG["JPEG_QUALITY"])
 MAX_BYTES = {"full": 1_500_000, "small": 450_000}  # size guard per file
 MIN_QUALITY = 72
-PIPELINE_VERSION = "v3"  # bump to re-process every photo with new settings
+PIPELINE_VERSION = "v3-f7"  # bump to re-process every photo with new settings
 WATERMARK = CFG["WATERMARK"] == "1"
 WM_TEXT = CFG["WATERMARK_TEXT"]
 WM_FONT = HERE / "fonts" / "Inter-Medium.otf"
@@ -262,6 +262,18 @@ def watermark(im):
     return Image.alpha_composite(im.convert("RGBA"), layer).convert("RGB")
 
 
+def c14_original(src, dest):  # F7-ORIGINALS: publish the original JPEG untouched (only the GPS tags come out)
+    import shutil, subprocess
+    src, dest = Path(src), Path(dest)
+    if src.suffix.lower() not in (".jpg", ".jpeg") or src.stat().st_size > 24_000_000:
+        return False  # PNG/TIFF or over Cloudflare's 25 MB file limit: keep the high-quality resized copy
+    tmp = dest.with_name(dest.name + ".f7tmp.jpg"); shutil.copyfile(src, tmp)
+    r = subprocess.run(["exiftool", "-q", "-q", "-m", "-overwrite_original", "-P", "-gps:all=", "-XMP-exif:GPS*=", "-XMP-iptcExt:LocationCreated*=", str(tmp)])
+    if r.returncode != 0:  # couldn't strip the location: keep the resized copy instead of the original
+        tmp.unlink(missing_ok=True); return None
+    tmp.replace(dest); return True
+
+
 def save_sized(im, dest, edge, budget):
     w, h = im.size
     scale = min(1.0, edge / max(w, h))
@@ -288,6 +300,7 @@ def process_image(src, dest_full, dest_small):
         im = ImageOps.exif_transpose(im)          # respect camera rotation
         im = to_srgb(im)
         size = save_sized(im, dest_full, MAX_EDGE, MAX_BYTES["full"])
+        c14_original(src, dest_full)  # F7-ORIGINALS
         save_sized(im, dest_small, SMALL_EDGE, MAX_BYTES["small"])
         return size
 
